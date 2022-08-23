@@ -26,6 +26,11 @@ getdeps:
 
 verifiers: getdeps fmt lint
 
+lint-for-containers:
+	@echo "Running $@ check in container:"
+	@GO111MODULE=on /usr/bin/golangci-lint cache clean
+	@GO111MODULE=on /usr/bin/golangci-lint run --timeout=5m --config ./.golangci.yml
+
 fmt:
 	@echo "Running $@ check"
 	@GO111MODULE=on gofmt -d restapi/
