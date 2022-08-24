@@ -16,17 +16,26 @@ concurrency:
 
 jobs:
 
-  lint-job-for-containers:
+  lint-job:
     name: Checking Lint
-    runs-on: self-hosted
+    runs-on: self-host
+    strategy:
+      matrix:
+        go-version: [ 1.18.x, 1.19.x ]
+        os: [ ubuntu-latest ]
     steps:
+      - name: Set up Go ${{ matrix.go-version }} on ${{ matrix.os }}
+        uses: actions/setup-go@v2
+        with:
+          go-version: ${{ matrix.go-version }}
+        id: go
 
-      - name: Check out code
+      - name: Check out code into the Go module directory
         uses: actions/checkout@v2
 
-      - name: Run Lint Job Test
+      - name: Build on ${{ matrix.os }}
         env:
           GO111MODULE: on
           GOOS: linux
         run: |
-          make lint-for-containers
+          make verifiers
