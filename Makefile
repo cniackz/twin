@@ -43,6 +43,7 @@ crosscompile:
 
 lint:
 	@echo "Running $@ check"
+	@echo "Executing from: ${GOPATH}/bin/golangci-lint"
 	@GO111MODULE=on ${GOPATH}/bin/golangci-lint cache clean
 	@GO111MODULE=on ${GOPATH}/bin/golangci-lint run --timeout=5m --config ./.golangci.yml
 
