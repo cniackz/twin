@@ -29,4 +29,8 @@ jobs:
       - name: Scanning code on ${{ matrix.os }}
         continue-on-error: false
         run: |
+          # Install semgrep rather than using a container due to:
+          # https://github.com/actions/checkout/issues/334
+          sudo apt install python3-pip || apt install python3-pip
+          pip3 install semgrep
           semgrep --config semgrep.yaml $(pwd)/portal-ui --error
