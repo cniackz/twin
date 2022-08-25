@@ -20,8 +20,6 @@ jobs:
   semgrep-static-code-analysis:
     name: "semgrep checks"
     runs-on: self-hosted
-    container:
-      image: "returntocorp/semgrep"
     strategy:
       matrix:
         os: [ ubuntu-latest ]
