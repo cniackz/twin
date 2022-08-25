@@ -16,17 +16,19 @@ concurrency:
 
 jobs:
 
-  lint-job-for-containers:
-    name: Checking Lint
+
+  semgrep-static-code-analysis:
+    name: "semgrep checks"
     runs-on: self-hosted
+    container:
+      image: "returntocorp/semgrep"
+    strategy:
+      matrix:
+        os: [ ubuntu-latest ]
     steps:
-
-      - name: Check out code
+      - name: Check out source code
         uses: actions/checkout@v2
-
-      - name: Run Lint Job Test
-        env:
-          GO111MODULE: on
-          GOOS: linux
+      - name: Scanning code on ${{ matrix.os }}
+        continue-on-error: false
         run: |
-          make lint-for-containers
+          semgrep --config semgrep.yaml $(pwd)/portal-ui --error
